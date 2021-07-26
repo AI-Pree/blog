@@ -1,37 +1,21 @@
-## Welcome to GitHub Pages
+# OS Kernel
 
-You can use the [editor on GitHub](https://github.com/AI-Pree/blog/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## OS interface
 
-### Markdown
+### Issue with the DRAM whole row getting recharged for Data retention
+Only for Volation Memory.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Usually memory controller handles the recharging of the capacitors in the row cell of the DRAM bank. The cell are recharged every 64ms (depends on the DRAM ). This will consume  high amount of energy and create high performance overhead, as memory cant be used during the recharge process. The time it would spend recharging the cells is based on the capacity of the DRAM. As larger number of capacitor are needed to enable the higher capacity DRAM, the size of capacitor are reduced to fit in the DRAM, which means the amount of  energy that can be stored in the capactior significantly decreases. As a result, leaks occurs frequtly under short amount of time in the capacitor. DRAM manufacturing companies will usually  increase the the refresh rate(how often the capacitors are recharged), which again creates huge overhead in the perfomance of the  DRAM.
 
-```markdown
-Syntax highlighted code block
+Failure to recharge the memory would create leaks on the capacitor of the cell. This will be issue while retaining the data from the DRAM memory (as data will lost). However, this is only for the volatile memory. In contrast, this wouldnt be an issue in new non-volatile DRAM memory.
 
-# Header 1
-## Header 2
-### Header 3
+The leak issue with the capacitor in the cell of the DRAM bank, as mentioned earlier, whole row cells are rehcarged instead of only the allocated cells. This is the current standard practices.
 
-- Bulleted
-- List
+In the system software level, creating a OS interface for the memory controller so that we can assign memory controller to recharge only the regions (bank cells) that are allocated.
 
-1. Numbered
-2. List
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+## References
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/AI-Pree/blog/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
