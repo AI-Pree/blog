@@ -18,6 +18,11 @@ Although this approach, will solve the issue to some extent, it would'nt be opti
 
 Another solution, to tackle this problem is by time profiliing the retention of the DRAM bank cells. So, we can profile each of the individual cells and decide time interval for recharging individual row. The reason that we will not be recharging based on indiviual cell is that not every cells has same capacity, while one's capacitor can have lower leak life span than its correspondng cells in the row. This will provide us with a better insight on when to recharge each individual row in the memory bank.
 
+However, you need to be careful while analysing the profiling of the rentention time and understanding the tradeoffs while trying to implement the solution. For instance, the power consumption, performance, accuarcy of the refresh time for each row based on the analysed profile metrics. One of the downside would be conjectural analysis causing leaks in the capacitor.
+
+### Retriving object life time from the compiler
+OS Kernel can also retrive the object life time of the application from the compiler (most of the compiler that has garbage collector already implements it) and tell the memory controller to refresh particular row in the memory bank based on the life span of the data object used by the application. Also, the memory controller can skip refreshing the particular row that has shorter life span than refresh time of the DRAM cells capacitor itself.
+
 ## References
 
 
