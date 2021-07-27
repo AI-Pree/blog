@@ -1,12 +1,12 @@
 # OS Kernel
-
+This OS is created to run on the RISC-V ISA computers.
 
 ## OS interface
 
-### Issue with the DRAM whole row getting recharged for Data retention
+### Issue in the DRAM, no optimisation for Data retention
 Only for volatile Memory.
 
-Usually memory controller handles the recharging of the capacitors in the row cell of the DRAM bank. The cell are recharged every 64ms (depends on the DRAM ). This will consume  high amount of energy and create high performance overhead, as memory cant be used during the recharge process. The time it would spend recharging the cells is based on the capacity of the DRAM. As larger number of capacitor are needed to enable the higher capacity DRAM, the size of capacitor are reduced to fit in the DRAM, which means the amount of  energy that can be stored in the capactior significantly decreases. As a result, leaks occurs frequtly under short amount of time in the capacitor. DRAM manufacturing companies will usually  increase the the refresh rate(how often the capacitors are recharged), which again creates huge overhead in the perfomance of the  DRAM.
+Usually memory controller handles the recharging of the capacitors in the row cell of the DRAM bank. The cell are recharged every 64ms (depends on the DRAM ). This will consume  high amount of energy and create high performance overhead, as memory cant be used during the recharge process. The time it would spend recharging the cells is based on the capacity of the DRAM. As larger number of capacitor are needed to enable the higher capacity DRAM, the size of capacitor are reduced to fit in the DRAM, which means the amount of  energy that can be stored in the capactior significantly decreases. As a result, leaks(when cells starting losing the data stored in it) occurs frequtly under short amount of time in the capacitor. DRAM manufacturing companies will usually  increase the the refresh rate(how often the capacitors are recharged), which again creates huge overhead in the perfomance of the  DRAM.
 
 Failure to recharge the memory would create leaks on the capacitor of the cell. This will be issue while retaining the data from the DRAM memory (as data will lost). However, this is only for the volatile memory. In contrast, this wouldnt be an issue in new non-volatile DRAM memory.
 
@@ -14,7 +14,9 @@ The leak issue with the capacitor in the cell of the DRAM bank, as mentioned ear
 
 In the system software level, creating a OS interface for the memory controller so that we can assign memory controller to recharge only the regions (bank cells) that are allocated.
 
+Although this approach, will solve the issue to some extent, it would'nt be optimal when all the cells in the memory bank are allocated.
 
+Another solution, to tackle this problem is by time profiliing the retention of the DRAM bank cells. So, we can profile each of the individual cells and decide time interval for recharging individual row. The reason that we will not be recharging based on indiviual cell is that not every cells has same capacity, while one's capacitor can have lower leak life span than its correspondng cells in the row. This will provide us with a better insight on when to recharge each individual row in the memory bank.
 
 ## References
 
