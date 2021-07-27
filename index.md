@@ -2,6 +2,8 @@
 This OS is created to run on the RISC-V ISA computers.
 
 ## OS interface
+Explains most of the design decision for implementing the OS interface. 
+
 
 ### Issue in the DRAM, no optimisation for Data retention
 Only for volatile Memory.
@@ -16,7 +18,7 @@ In the system software level, creating a OS interface for the memory controller 
 
 Although this approach, will solve the issue to some extent, it would'nt be optimal when all the cells in the memory bank are allocated.
 
-Another solution, to tackle this problem is by time profiliing the retention of the DRAM bank cells. So, we can profile each of the individual cells and decide time interval for recharging individual row. The reason that we will not be recharging based on indiviual cell is that not every cells has same capacity, while one's capacitor can have lower leak life span than its correspondng cells in the row. This will provide us with a better insight on when to recharge each individual row in the memory bank.
+Another solution, to tackle this problem is by time profiliing the retention of the DRAM bank cells. So, we can profile each of the individual cells and decide time interval for recharging individual row. The reason that we will not be recharging based on indiviual cell is that not every cells has same capacity, while one's capacitor can have lower leak life span than its correspondng cells in the row. This will provide us with a better insight on when to recharge each individual row in the memory bank. We can use the metrics to set our own rules on how the memory controller allocates the data in each indiviual row of the DRAM bank. For instance, storing the data on the row that has retention time more than the life span of the object. This will help us to increase the refresh time of the DRAM banks, as only the cell with greater retention time has data stored in it. It mitigates the need to refresh the DRAM banks rows in short time periods.
 
 However, you need to be careful while analysing the profiling of the rentention time and understanding the tradeoffs while trying to implement the solution. For instance, the power consumption, performance, accuarcy of the refresh time for each row based on the analysed profile metrics. One of the downside would be conjectural analysis causing leaks in the capacitor.
 
